@@ -74,8 +74,9 @@ public class Program
         //var testRosterList allows for easier testing without having to create a new roster
         var testRosterList = new List<List<Unit>> { new List<Unit> { heroUnit, princessUnit, saviorUnit }, new List<Unit> { princessUnit, saviorUnit, feederUnit}, new List<Unit> { princessUnit, manicUnit, penguinUnit}, new List<Unit> { saviorUnit, mayorUnit, princessUnit} };
         //var rosterList = InitialRosterSelection(unitList);
-        //FullTurnRunthrough(testRosterList);
-        OpenChest(listOfAllItems, testRosterList);
+        UnitAttack(testRosterList);
+        //FullTurnRunthrough(rosterList);
+        //OpenChest(listOfAllItems, rosterList);
 
     }
 
