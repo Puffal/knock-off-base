@@ -74,9 +74,7 @@ public class Program
         //var testRosterList allows for easier testing without having to create a new roster
         var testRosterList = new List<List<Unit>> { new List<Unit> { heroUnit, princessUnit, saviorUnit }, new List<Unit> { princessUnit, saviorUnit, feederUnit}, new List<Unit> { princessUnit, manicUnit, penguinUnit}, new List<Unit> { saviorUnit, mayorUnit, princessUnit} };
         //var rosterList = InitialRosterSelection(unitList);
-        UnitAttack(testRosterList);
-        //FullTurnRunthrough(rosterList);
-        //OpenChest(listOfAllItems, rosterList);
+        FullTurnRunthrough(testRosterList, listOfAllItems);
 
     }
 
@@ -126,6 +124,29 @@ public class Program
         DisplayFullRoster(listOfRosters);
         var attackingUnitInput = Console.ReadLine();
         var attackingUnit = concatenatedListOfActiveUnits[Int32.Parse(attackingUnitInput)];
+
+        Console.WriteLine("Which unit is being hit?");
+        DisplayFullRoster(listOfRosters);
+        var defendingUnitInput = Console.ReadLine();
+        var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
+
+        Console.WriteLine("What Ability is being used?");
+        int optionInt = 0;
+        foreach (var ability in attackingUnit.Abilities)
+        {
+            Console.WriteLine($" {optionInt}: {ability.AbilityName}");
+            optionInt++;
+        }
+        var abilityUsedInput = Console.ReadLine();
+        var abilityUsed = attackingUnit.Abilities[Int32.Parse(abilityUsedInput)];
+
+        DamageCalculation(attackingUnit, defendingUnit, abilityUsed);
+
+        return defendingUnit;
+    }
+    public static Unit UnitAttack(Unit attackingUnit, List<List<Unit>> listOfRosters)
+    {
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
         Console.WriteLine("Which unit is being hit?");
         DisplayFullRoster(listOfRosters);
@@ -271,23 +292,37 @@ public class Program
 
         DisplayInfo.CheckInventory(chestUnit);
     }
-
-    public static void EquipItem(List<Unit> unitList)
+    public static void OpenChest(List<Item> listOfAllItems, Unit unit)
     {
+        var chestItem = AddRandomItem(listOfAllItems, unit);
+        Console.WriteLine($"\n\n'{chestItem.Name}' was added to {unit}'s Inventory\n");
+
+        DisplayInfo.CheckInventory(unit);
+    }
+
+    public static void EquipItem(List<List<Unit>> listOfRosters)
+    {
+        var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
+
         Console.WriteLine("\nWhich unit is Equipping an Item?\n");
         var optionInt = 0;
-        foreach (var unit in unitList)
-        {
-            Console.WriteLine($" {optionInt}: {unit.Name}");
-            optionInt++;
-        }
+        DisplayFullRoster(listOfRosters);
         var equippingUnitInput = Console.ReadLine();
-        var equippingUnit = unitList[Int32.Parse(equippingUnitInput)];
+        var equippingUnit = concatenatedListOfActiveUnits[Int32.Parse(equippingUnitInput)];
 
-        while (equippingUnit.Inventory.EquippedItems.Count >= 4)
+        var maxEquippedItems = 4;
+        while (equippingUnit.Inventory.EquippedItems.Count >= maxEquippedItems)
         {
-            Console.WriteLine("Too many Items: Please Unequip Item of your choice");
-            UnEquipItem(equippingUnit);
+            Console.WriteLine("ERROR: Too Many Items: Would you like to Unequip an Item? [y/n]");
+            var tooManyItemsInput = Console.ReadLine();
+            if (tooManyItemsInput == "y")
+            {
+                UnEquipItem(equippingUnit);
+            }
+            if (tooManyItemsInput == "n")
+            {
+                return;
+            }
         }
 
         Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
@@ -315,6 +350,46 @@ public class Program
         }
 
     }
+    public static void EquipItem(Unit equippingUnit)
+    {
+        while (equippingUnit.Inventory.EquippedItems.Count >= 4)
+        {
+            Console.WriteLine("ERROR: Too Many Items: Would you like to Unequip an Item? [y/n]");
+            var tooManyItemsInput = Console.ReadLine();
+            if (tooManyItemsInput == "y")
+            {
+                UnEquipItem(equippingUnit);
+            }
+            if (tooManyItemsInput == "n") 
+            {
+                return;
+            }
+        }
+
+        Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
+        var optionInt = 0;
+        foreach (var item in equippingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($" {optionInt}: {item.Name}");
+            optionInt++;
+        }
+
+        var itemToEquipInput = Console.ReadLine();
+        var itemToEquip = equippingUnit.Inventory.UnequippedItems[Int32.Parse(itemToEquipInput)];
+        equippingUnit.Inventory.UnequippedItems.Remove(itemToEquip);
+        equippingUnit.Inventory.EquippedItems.Add(itemToEquip);
+
+
+        Console.WriteLine($"\n\n'{itemToEquip.Name}' was Equipped\n");
+        foreach (var item in equippingUnit.Inventory.UnequippedItems)
+        {
+            Console.WriteLine($"unequipped Item: {item.Name}");
+        }
+        foreach (var item in equippingUnit.Inventory.EquippedItems)
+        {
+            Console.WriteLine($"equipped Item: {item.Name}");
+        }
+    }
 
     public static void UnEquipItem(Unit unit)
     {
@@ -332,9 +407,11 @@ public class Program
         unit.Inventory.UnequippedItems.Add (itemToUnEquip);
     }
 
-    public static void DisplayTurnOrder(List<Unit> unitList)
+    public static void DisplayTurnOrder(List<List<Unit>> listOfRosters)
     {
-        List<Unit> turnOrderList = unitList.OrderByDescending(unit=>unit.EffectiveSpeed).ToList();
+        var concatenatedListOfRosters = ListConcatenation(listOfRosters);
+
+        List<Unit> turnOrderList = concatenatedListOfRosters.OrderByDescending(unit=>unit.EffectiveSpeed).ToList();
 
         Console.WriteLine("\n\nTurn Order: \n\n");
         
@@ -414,7 +491,7 @@ public class Program
         }
     }
 
-    public static void FullTurnRunthrough(List<List<Unit>> listOfRosters)
+    public static void FullTurnRunthrough(List<List<Unit>> listOfRosters, List<Item> listOfAllItems)
     {
         var concatenatedListOfUnits = ListConcatenation(listOfRosters);
         DisplayFullRoster(listOfRosters);
@@ -422,12 +499,25 @@ public class Program
 
         var selectedUnitInput = Console.ReadLine();
         var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
-        
 
-        Console.WriteLine($"Is {selectedUnit.Name} throwing an item? (y/n)");
+        Console.WriteLine("\nChoose One:\n 0: Equip Item \n 1: Unequip Item \n 2: Skip");
+
+        var isUnitChangingItemsInput = Console.ReadLine();
+        if (isUnitChangingItemsInput == "0") { EquipItem(selectedUnit); }
+        if (isUnitChangingItemsInput == "1") { UnEquipItem(selectedUnit); }
+
+        Console.WriteLine($"Is {selectedUnit.Name} throwing an item? [y/n]");
         var isUnitThrowingInput = Console.ReadLine();
         if (isUnitThrowingInput == "y") { ItemThrow(selectedUnit, listOfRosters); }
-        
+
+        Console.WriteLine("Move your unit. Press any input to continue.");
+        Console.ReadLine();
+
+        Console.WriteLine("\nChoose One:\n 0: Open Chest \n 1: Attack \n 2: End Turn");
+        var isUnitTakingMainActionInput = Console.ReadLine();
+        if (isUnitTakingMainActionInput == "0") { OpenChest( listOfAllItems ,selectedUnit); }
+        if (isUnitTakingMainActionInput == "1") { UnitAttack(selectedUnit, listOfRosters); }
+
     }
 
 }
