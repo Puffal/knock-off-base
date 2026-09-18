@@ -120,13 +120,13 @@ public class Program
     {
         var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
-        Console.WriteLine("Which unit is attacking?");
         DisplayFullRoster(listOfRosters);
+        Console.WriteLine("\nWhich unit is attacking?\n");
         var attackingUnitInput = Console.ReadLine();
         var attackingUnit = concatenatedListOfActiveUnits[Int32.Parse(attackingUnitInput)];
 
-        Console.WriteLine("Which unit is being hit?");
         DisplayFullRoster(listOfRosters);
+        Console.WriteLine("\nWhich unit is being hit?\n");
         var defendingUnitInput = Console.ReadLine();
         var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
 
@@ -144,12 +144,13 @@ public class Program
 
         return defendingUnit;
     }
+
     public static Unit UnitAttack(Unit attackingUnit, List<List<Unit>> listOfRosters)
     {
         var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
-        Console.WriteLine("Which unit is being hit?");
         DisplayFullRoster(listOfRosters);
+        Console.WriteLine("Which unit is being hit?");
         var defendingUnitInput = Console.ReadLine();
         var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
 
@@ -218,7 +219,7 @@ public class Program
     {   
         if (throwingUnit.Inventory.UnequippedItems.Count == 0) 
         {
-            Console.WriteLine("Error: No unequipped items to throw");
+            Console.WriteLine("ERROR: No unequipped items to throw");
             return; 
         }
 
@@ -292,6 +293,7 @@ public class Program
 
         DisplayInfo.CheckInventory(chestUnit);
     }
+
     public static void OpenChest(List<Item> listOfAllItems, Unit unit)
     {
         var chestItem = AddRandomItem(listOfAllItems, unit);
@@ -325,6 +327,12 @@ public class Program
             }
         }
 
+        if (equippingUnit.Inventory.UnequippedItems.Count == 0)
+        {
+            Console.WriteLine("ERROR: No items to equip");
+            return;
+        }
+
         Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
         optionInt = 0;
         foreach(var item in equippingUnit.Inventory.UnequippedItems)
@@ -350,9 +358,12 @@ public class Program
         }
 
     }
+
     public static void EquipItem(Unit equippingUnit)
     {
-        while (equippingUnit.Inventory.EquippedItems.Count >= 4)
+
+        var maxEquippedItems = 4;
+        while (equippingUnit.Inventory.EquippedItems.Count >= maxEquippedItems)
         {
             Console.WriteLine("ERROR: Too Many Items: Would you like to Unequip an Item? [y/n]");
             var tooManyItemsInput = Console.ReadLine();
@@ -364,6 +375,11 @@ public class Program
             {
                 return;
             }
+        }
+        if (equippingUnit.Inventory.UnequippedItems.Count == 0) 
+        {
+            Console.WriteLine("ERROR: No items to equip");
+            return;
         }
 
         Console.WriteLine($"\nWhich Item is {equippingUnit.Name} Equipping?\n");
@@ -393,6 +409,12 @@ public class Program
 
     public static void UnEquipItem(Unit unit)
     {
+        if (unit.Inventory.EquippedItems.Count == 0)
+        {
+            Console.WriteLine("ERROR: No items to Unequip");
+            return;
+        }
+
         Console.WriteLine("Which Item is being Unequipped?");
         var optionInt = 0;
         foreach(var item in unit.Inventory.EquippedItems)
@@ -498,6 +520,11 @@ public class Program
         Console.WriteLine("\nWhich Unit's turn is next?\n");
 
         var selectedUnitInput = Console.ReadLine();
+        while (Int32.Parse(selectedUnitInput) >= concatenatedListOfUnits.Count || Int32.Parse(selectedUnitInput) < 0)
+        {
+            Console.WriteLine("ERROR: wrong number doofus");
+            selectedUnitInput = Console.ReadLine();
+        }
         var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
 
         Console.WriteLine("\nChoose One:\n 0: Equip Item \n 1: Unequip Item \n 2: Skip");
@@ -515,7 +542,7 @@ public class Program
 
         Console.WriteLine("\nChoose One:\n 0: Open Chest \n 1: Attack \n 2: End Turn");
         var isUnitTakingMainActionInput = Console.ReadLine();
-        if (isUnitTakingMainActionInput == "0") { OpenChest( listOfAllItems ,selectedUnit); }
+        if (isUnitTakingMainActionInput == "0") { OpenChest(listOfAllItems ,selectedUnit); }
         if (isUnitTakingMainActionInput == "1") { UnitAttack(selectedUnit, listOfRosters); }
 
     }
