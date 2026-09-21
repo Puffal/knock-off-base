@@ -175,8 +175,17 @@ public class Program
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is throwing?");
+
+        int unitInt;
         var throwingUnitInput = Console.ReadLine();
-        var throwingUnit = concatenatedListOfActiveUnits[Int32.Parse(throwingUnitInput)];
+        bool successfulParse = int.TryParse(throwingUnitInput, out unitInt);
+        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
+        {
+            Console.WriteLine($"ERROR: '{throwingUnitInput}' is not a valid input. Please type a valid number.");
+            throwingUnitInput = Console.ReadLine();
+            successfulParse = int.TryParse(throwingUnitInput, out unitInt);
+        }
+        var throwingUnit = concatenatedListOfActiveUnits[unitInt];
 
         if (throwingUnit.Inventory.UnequippedItems.Count == 0)
         {
@@ -184,12 +193,20 @@ public class Program
             return;
         }
 
+
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is being thrown to?");
-        var throwntoUnitInput = Console.ReadLine();
-        var throwntoUnit = concatenatedListOfActiveUnits[Int32.Parse(throwntoUnitInput)];
-        
 
+        var thrownToUnitInput = Console.ReadLine();
+        successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
+        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
+        {
+            Console.WriteLine($"ERROR: '{thrownToUnitInput}' is not a valid input. Please type a valid number.");
+            thrownToUnitInput = Console.ReadLine();
+            successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
+        }
+        var thrownToUnit = concatenatedListOfActiveUnits[unitInt];
+        
 
         Console.WriteLine("Which Item is being thrown?");
         var optionInt = 0;
@@ -198,20 +215,29 @@ public class Program
             Console.WriteLine($" {optionInt}: {item.Name}");
             optionInt++;
         }
+
+        int itemInt;
         var thrownItemInput = Console.ReadLine();
-        var thrownItem = throwingUnit.Inventory.UnequippedItems[Int32.Parse(thrownItemInput)];
+        successfulParse = int.TryParse(thrownItemInput, out itemInt);
+        while (successfulParse == false || itemInt >= throwingUnit.Inventory.UnequippedItems.Count || itemInt < 0)
+        {
+            Console.WriteLine($"ERROR: '{thrownItemInput}' is not a valid input. Please type a valid number.");
+            thrownItemInput = Console.ReadLine();
+            successfulParse = int.TryParse(thrownItemInput, out itemInt);
+        }
+        var thrownItem = throwingUnit.Inventory.UnequippedItems[itemInt];
 
 
-        throwntoUnit.Inventory.UnequippedItems.Add(thrownItem);
+        thrownToUnit.Inventory.UnequippedItems.Add(thrownItem);
         throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
 
-        foreach(var item in throwntoUnit.Inventory.UnequippedItems)
+        foreach(var item in thrownToUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwntoUnit.Name}: {item.Name}");
+            Console.WriteLine($"{thrownToUnit.Name}'s new inventory: {item.Name}");
         }
         foreach (var item in throwingUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwingUnit.Name}: {item.Name}");
+            Console.WriteLine($"{throwingUnit.Name}'s new inventory: {item.Name}");
         }
     }
 
@@ -226,9 +252,19 @@ public class Program
         var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
         DisplayFullRoster(listOfRosters);
-        Console.WriteLine("\nWhich unit is being thrown to?");
-        var throwntoUnitInput = Console.ReadLine();
-        var throwntoUnit = concatenatedListOfActiveUnits[Int32.Parse(throwntoUnitInput)];
+        Console.WriteLine("Which unit is being thrown to?");
+
+        int unitInt;
+        var thrownToUnitInput = Console.ReadLine();
+        var successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
+        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
+        {
+            Console.WriteLine($"ERROR: '{thrownToUnitInput}' is not a valid input. Please type a valid number.");
+            thrownToUnitInput = Console.ReadLine();
+            successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
+        }
+        var thrownToUnit = concatenatedListOfActiveUnits[unitInt];
+
 
         Console.WriteLine("Which Item is being thrown?");
         var optionInt = 0;
@@ -237,20 +273,29 @@ public class Program
             Console.WriteLine($" {optionInt}: {item.Name}");
             optionInt++;
         }
+
+        int itemInt;
         var thrownItemInput = Console.ReadLine();
-        var thrownItem = throwingUnit.Inventory.UnequippedItems[Int32.Parse(thrownItemInput)];
+        successfulParse = int.TryParse(thrownItemInput, out itemInt);
+        while (successfulParse == false || itemInt >= throwingUnit.Inventory.UnequippedItems.Count || itemInt < 0)
+        {
+            Console.WriteLine($"ERROR: '{thrownItemInput}' is not a valid input. Please type a valid number.");
+            thrownItemInput = Console.ReadLine();
+            successfulParse = int.TryParse(thrownItemInput, out itemInt);
+        }
+        var thrownItem = throwingUnit.Inventory.UnequippedItems[itemInt];
 
 
-        throwntoUnit.Inventory.UnequippedItems.Add(thrownItem);
+        thrownToUnit.Inventory.UnequippedItems.Add(thrownItem);
         throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
 
-        foreach (var item in throwntoUnit.Inventory.UnequippedItems)
+        foreach (var item in thrownToUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwntoUnit.Name}: {item.Name}");
+            Console.WriteLine($"{thrownToUnit.Name}'s new inventory: {item.Name}");
         }
         foreach (var item in throwingUnit.Inventory.UnequippedItems)
         {
-            Console.WriteLine($"{throwingUnit.Name}: {item.Name}");
+            Console.WriteLine($"{throwingUnit.Name}'s new inventory: {item.Name}");
         }
     }
 
@@ -519,13 +564,18 @@ public class Program
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("\nWhich Unit's turn is next?\n");
 
+
+        int unitInt;
         var selectedUnitInput = Console.ReadLine();
-        while (Int32.Parse(selectedUnitInput) >= concatenatedListOfUnits.Count || Int32.Parse(selectedUnitInput) < 0)
+        bool successfulParse = int.TryParse(selectedUnitInput, out unitInt);
+        while (successfulParse == false || unitInt >= concatenatedListOfUnits.Count || unitInt < 0) 
         {
-            Console.WriteLine("ERROR: wrong number doofus");
+            Console.WriteLine($"ERROR: '{selectedUnitInput}' is not a valid input. Please type a valid number.");
             selectedUnitInput = Console.ReadLine();
+            successfulParse = int.TryParse(selectedUnitInput, out unitInt);
         }
-        var selectedUnit = concatenatedListOfUnits[Int32.Parse(selectedUnitInput)];
+        var selectedUnit = concatenatedListOfUnits[unitInt];
+
 
         Console.WriteLine("\nChoose One:\n 0: Equip Item \n 1: Unequip Item \n 2: Skip");
 
