@@ -122,13 +122,11 @@ public class Program
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("\nWhich unit is attacking?\n");
-        var attackingUnitInput = Console.ReadLine();
-        var attackingUnit = concatenatedListOfActiveUnits[Int32.Parse(attackingUnitInput)];
+        var attackingUnit = RecieveInput(concatenatedListOfActiveUnits);
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("\nWhich unit is being hit?\n");
-        var defendingUnitInput = Console.ReadLine();
-        var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
+        var defendingUnit = RecieveInput(concatenatedListOfActiveUnits);
 
         Console.WriteLine("What Ability is being used?");
         int optionInt = 0;
@@ -137,8 +135,7 @@ public class Program
             Console.WriteLine($" {optionInt}: {ability.AbilityName}");
             optionInt++;
         }
-        var abilityUsedInput = Console.ReadLine();
-        var abilityUsed = attackingUnit.Abilities[Int32.Parse(abilityUsedInput)];
+        var abilityUsed = RecieveInput(attackingUnit.Abilities);
 
         DamageCalculation(attackingUnit, defendingUnit, abilityUsed);
 
@@ -150,9 +147,8 @@ public class Program
         var concatenatedListOfActiveUnits = ListConcatenation(listOfRosters);
 
         DisplayFullRoster(listOfRosters);
-        Console.WriteLine("Which unit is being hit?");
-        var defendingUnitInput = Console.ReadLine();
-        var defendingUnit = concatenatedListOfActiveUnits[Int32.Parse(defendingUnitInput)];
+        Console.WriteLine("\nWhich unit is being hit?\n");
+        var defendingUnit = RecieveInput(concatenatedListOfActiveUnits);
 
         Console.WriteLine("What Ability is being used?");
         int optionInt = 0;
@@ -161,8 +157,7 @@ public class Program
             Console.WriteLine($" {optionInt}: {ability.AbilityName}");
             optionInt++;
         }
-        var abilityUsedInput = Console.ReadLine();
-        var abilityUsed = attackingUnit.Abilities[Int32.Parse(abilityUsedInput)];
+        var abilityUsed = RecieveInput(attackingUnit.Abilities);
 
         DamageCalculation(attackingUnit, defendingUnit, abilityUsed);
 
@@ -175,17 +170,7 @@ public class Program
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is throwing?");
-
-        int unitInt;
-        var throwingUnitInput = Console.ReadLine();
-        bool successfulParse = int.TryParse(throwingUnitInput, out unitInt);
-        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
-        {
-            Console.WriteLine($"ERROR: '{throwingUnitInput}' is not a valid input. Please type a valid number.");
-            throwingUnitInput = Console.ReadLine();
-            successfulParse = int.TryParse(throwingUnitInput, out unitInt);
-        }
-        var throwingUnit = concatenatedListOfActiveUnits[unitInt];
+        var throwingUnit = RecieveInput(concatenatedListOfActiveUnits);
 
         if (throwingUnit.Inventory.UnequippedItems.Count == 0)
         {
@@ -193,20 +178,10 @@ public class Program
             return;
         }
 
-
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is being thrown to?");
+        var thrownToUnit = RecieveInput(concatenatedListOfActiveUnits);
 
-        var thrownToUnitInput = Console.ReadLine();
-        successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
-        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
-        {
-            Console.WriteLine($"ERROR: '{thrownToUnitInput}' is not a valid input. Please type a valid number.");
-            thrownToUnitInput = Console.ReadLine();
-            successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
-        }
-        var thrownToUnit = concatenatedListOfActiveUnits[unitInt];
-        
 
         Console.WriteLine("Which Item is being thrown?");
         var optionInt = 0;
@@ -216,17 +191,8 @@ public class Program
             optionInt++;
         }
 
-        int itemInt;
-        var thrownItemInput = Console.ReadLine();
-        successfulParse = int.TryParse(thrownItemInput, out itemInt);
-        while (successfulParse == false || itemInt >= throwingUnit.Inventory.UnequippedItems.Count || itemInt < 0)
-        {
-            Console.WriteLine($"ERROR: '{thrownItemInput}' is not a valid input. Please type a valid number.");
-            thrownItemInput = Console.ReadLine();
-            successfulParse = int.TryParse(thrownItemInput, out itemInt);
-        }
-        var thrownItem = throwingUnit.Inventory.UnequippedItems[itemInt];
 
+        var thrownItem = RecieveInput(throwingUnit.Inventory.UnequippedItems);
 
         thrownToUnit.Inventory.UnequippedItems.Add(thrownItem);
         throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
@@ -254,16 +220,7 @@ public class Program
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("Which unit is being thrown to?");
 
-        int unitInt;
-        var thrownToUnitInput = Console.ReadLine();
-        var successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
-        while (successfulParse == false || unitInt >= concatenatedListOfActiveUnits.Count || unitInt < 0)
-        {
-            Console.WriteLine($"ERROR: '{thrownToUnitInput}' is not a valid input. Please type a valid number.");
-            thrownToUnitInput = Console.ReadLine();
-            successfulParse = int.TryParse(thrownToUnitInput, out unitInt);
-        }
-        var thrownToUnit = concatenatedListOfActiveUnits[unitInt];
+        var thrownToUnit = RecieveInput(concatenatedListOfActiveUnits);
 
 
         Console.WriteLine("Which Item is being thrown?");
@@ -274,17 +231,7 @@ public class Program
             optionInt++;
         }
 
-        int itemInt;
-        var thrownItemInput = Console.ReadLine();
-        successfulParse = int.TryParse(thrownItemInput, out itemInt);
-        while (successfulParse == false || itemInt >= throwingUnit.Inventory.UnequippedItems.Count || itemInt < 0)
-        {
-            Console.WriteLine($"ERROR: '{thrownItemInput}' is not a valid input. Please type a valid number.");
-            thrownItemInput = Console.ReadLine();
-            successfulParse = int.TryParse(thrownItemInput, out itemInt);
-        }
-        var thrownItem = throwingUnit.Inventory.UnequippedItems[itemInt];
-
+        var thrownItem = RecieveInput(throwingUnit.Inventory.UnequippedItems);
 
         thrownToUnit.Inventory.UnequippedItems.Add(thrownItem);
         throwingUnit.Inventory.UnequippedItems.Remove(thrownItem);
@@ -331,8 +278,7 @@ public class Program
 
         DisplayFullRoster(listOfRosters);
         Console.WriteLine("\nWhich unit is opening a Chest?");
-        var chestUnitInput = Console.ReadLine();
-        var chestUnit = concatenatedListOfActiveUnits[Int32.Parse(chestUnitInput)];
+        var chestUnit = RecieveInput(concatenatedListOfActiveUnits);
         var chestItem = AddRandomItem(listOfAllItems, chestUnit);
         Console.WriteLine($"\n\n'{chestItem.Name}' was added to {chestUnit}'s Inventory\n");
 
@@ -354,8 +300,7 @@ public class Program
         Console.WriteLine("\nWhich unit is Equipping an Item?\n");
         var optionInt = 0;
         DisplayFullRoster(listOfRosters);
-        var equippingUnitInput = Console.ReadLine();
-        var equippingUnit = concatenatedListOfActiveUnits[Int32.Parse(equippingUnitInput)];
+        var equippingUnit = RecieveInput(concatenatedListOfActiveUnits);
 
         var maxEquippedItems = 4;
         while (equippingUnit.Inventory.EquippedItems.Count >= maxEquippedItems)
@@ -386,8 +331,8 @@ public class Program
             optionInt++;
         }
 
-        var itemToEquipInput = Console.ReadLine();
-        var itemToEquip = equippingUnit.Inventory.UnequippedItems[Int32.Parse(itemToEquipInput)];
+        var itemToEquip = RecieveInput(equippingUnit.Inventory.UnequippedItems);
+
         equippingUnit.Inventory.UnequippedItems.Remove(itemToEquip);
         equippingUnit.Inventory.EquippedItems.Add(itemToEquip);
 
@@ -435,8 +380,7 @@ public class Program
             optionInt++;
         }
 
-        var itemToEquipInput = Console.ReadLine();
-        var itemToEquip = equippingUnit.Inventory.UnequippedItems[Int32.Parse(itemToEquipInput)];
+        var itemToEquip = RecieveInput(equippingUnit.Inventory.UnequippedItems);
         equippingUnit.Inventory.UnequippedItems.Remove(itemToEquip);
         equippingUnit.Inventory.EquippedItems.Add(itemToEquip);
 
@@ -468,8 +412,7 @@ public class Program
             optionInt++;
         }
 
-        var itemToUnEquipInput = Console.ReadLine();
-        var itemToUnEquip = unit.Inventory.EquippedItems[Int32.Parse(itemToUnEquipInput)];
+        var itemToUnEquip = RecieveInput(unit.Inventory.EquippedItems);
         unit.Inventory.EquippedItems.Remove(itemToUnEquip);
         unit.Inventory.UnequippedItems.Add (itemToUnEquip);
     }
@@ -493,7 +436,17 @@ public class Program
     {
         Console.WriteLine("Welcome to Project: Knockoffs! Thank you for loading in. How many characters will be on each person's lineup?");
         var rosterSizeInput = Console.ReadLine();
-        var rosterSize = Int32.Parse(rosterSizeInput);
+        var maxRosterSize = 3;
+        int index;
+        var selectedInput = Console.ReadLine();
+        bool successfulParse = int.TryParse(selectedInput, out index);
+        while (successfulParse == false || index >= maxRosterSize || index < 0)
+        {
+            Console.WriteLine($"ERROR: '{selectedInput}' is not a valid input. Please type a valid number.");
+            selectedInput = Console.ReadLine();
+            successfulParse = int.TryParse(selectedInput, out index);
+        }
+        var rosterSize = index;
 
         var playerLists = new List<List<Unit>>();
         var playerCount = 4;
@@ -513,10 +466,10 @@ public class Program
                     Console.WriteLine($"{optionInt}: {unit.Name}");
                     optionInt++;
                 }
-                var selectedUnitInput = Console.ReadLine();
-                var selectedUnit = Int32.Parse(selectedUnitInput);
-                playerLists[p].Add(unitList[selectedUnit]);
-                Console.WriteLine($"\n{unitList[selectedUnit].Name} was added to Player {p + 1}'s Roster. {rosterSize - i - 1} left\n");
+
+                var selectedUnit = RecieveInput(unitList);
+                playerLists[p].Add(selectedUnit);
+                Console.WriteLine($"\n{selectedUnit.Name} was added to Player {p + 1}'s Roster. {rosterSize - i - 1} left\n");
             }
             Console.WriteLine($"\nPlayer {p + 1}'s Roster: \n");
             foreach (var unit in playerLists[p])
@@ -577,7 +530,7 @@ public class Program
         var selectedUnit = concatenatedListOfUnits[unitInt];
 
 
-        Console.WriteLine("\nChoose One:\n 0: Equip Item \n 1: Unequip Item \n 2: Skip");
+        Console.WriteLine($"\n Chosen Unit: {selectedUnit.Name} \n\nChoose One:\n 0: Equip Item \n 1: Unequip Item \n 2: Skip");
 
         var isUnitChangingItemsInput = Console.ReadLine();
         if (isUnitChangingItemsInput == "0") { EquipItem(selectedUnit); }
@@ -594,7 +547,55 @@ public class Program
         var isUnitTakingMainActionInput = Console.ReadLine();
         if (isUnitTakingMainActionInput == "0") { OpenChest(listOfAllItems ,selectedUnit); }
         if (isUnitTakingMainActionInput == "1") { UnitAttack(selectedUnit, listOfRosters); }
-
     }
+    public static Unit RecieveInput(List<Unit> listOfOptions)
+    {
+        int index;
+        var selectedInput = Console.ReadLine();
+        bool successfulParse = int.TryParse(selectedInput, out index);
+        while(successfulParse == false || index >= listOfOptions.Count || index < 0) 
+        {
+            Console.WriteLine($"ERROR: '{selectedInput}' is not a valid input. Please type a valid number.");
+            selectedInput = Console.ReadLine();
+            successfulParse = int.TryParse(selectedInput, out index);
+        }
+
+        var selectedUnit = listOfOptions[index];
+        return selectedUnit;
+    }
+
+    public static Ability RecieveInput(List<Ability> listOfOptions)
+    {
+        int index;
+        var selectedInput = Console.ReadLine();
+        bool successfulParse = int.TryParse(selectedInput, out index);
+        while (successfulParse == false || index >= listOfOptions.Count || index < 0)
+        {
+            Console.WriteLine($"ERROR: '{selectedInput}' is not a valid input. Please type a valid number.");
+            selectedInput = Console.ReadLine();
+            successfulParse = int.TryParse(selectedInput, out index);
+        }
+
+        var selectedAbility = listOfOptions[index];
+        return selectedAbility;
+    }
+
+    public static Item RecieveInput(List<Item> listOfOptions)
+    {
+        int index;
+        var selectedInput = Console.ReadLine();
+        bool successfulParse = int.TryParse(selectedInput, out index);
+        while (successfulParse == false || index >= listOfOptions.Count || index < 0)
+        {
+            Console.WriteLine($"ERROR: '{selectedInput}' is not a valid input. Please type a valid number.");
+            selectedInput = Console.ReadLine();
+            successfulParse = int.TryParse(selectedInput, out index);
+        }
+
+        var selectedItem = listOfOptions[index];
+        return selectedItem;
+    }
+
+
 
 }
