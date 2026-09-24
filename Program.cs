@@ -92,7 +92,7 @@ public class Program
 
     public static void DamageCalculation(Unit attackingUnit, Unit defendingUnit, Ability abilityUsed)
     {
-        var contextTrigger = new TriggerContext(attackingUnit, TriggerType.Combat) { Target = defendingUnit, AbilityUsed = abilityUsed };
+        var contextTrigger = new TriggerContext(attackingUnit, defendingUnit, TriggerType.Combat) { AbilityUsed = abilityUsed };
         attackingUnit.CalculateEffectiveStats(contextTrigger);
         defendingUnit.CalculateEffectiveStats(contextTrigger);
         var attackingDamage = abilityUsed.Damage * attackingUnit.EffectiveDamageModifier;

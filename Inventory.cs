@@ -2,7 +2,7 @@
 
 public class Inventory
 {
-	public List<Item> EquippedItems {  get; set; }
+	public List<Item> EquippedItems { get; set; }
     public List<Item> UnequippedItems { get; set; } = new List<Item>();
     public Unit Unit { get; set; }
 
