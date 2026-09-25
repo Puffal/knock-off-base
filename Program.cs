@@ -10,20 +10,15 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var freezeStatus = new MultiStatus("Freeze", 1, new List<StatusPart> { new StatusPart(Stat.Movement, OperatorHandler.Multiply, 0f), new StatusPart(Stat.DamageModifier, OperatorHandler.Multiply, 0f) });
-        var slowStatus = new SingleStatus("Slow", 1, Stat.Movement, OperatorHandler.Multiply, .5f);
-        var silenceStatus = new SingleStatus("Silence", 2, Stat.DamageModifier, OperatorHandler.Multiply, 0f);
 
-        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, null) { Statuses = new List<IStatus> { slowStatus, freezeStatus }, };
-
-        var flareShot = new Ability("Flare Shot", 15, 3, 1, AbilityType.Rigid, new List<AbilityEffect> { new AbilityEffect("ImpactShot", 15, 3, slowStatus), new AbilityEffect("Flare Spread", 20, 5, slowStatus) }) { Statuses = new List<IStatus> { slowStatus }, };
+        var snowballThrow = new Ability("Snowball Throw", 15, 4, 1, AbilityType.Targeted, new List<IStatus> { StatusEffect.SlowStatus, StatusEffect.FreezeStatus });
 
         //This is functionally equivalent to list.Add(flareshot)
-        var princessAbilities = new List<Ability> { flareShot };
+        var princessAbilities = new List<Ability> {  };
         var placeholderAbilities = new List<Ability>();
 
 
-        var princessStatuses = new List<IStatus>() { slowStatus };
+        var princessStatuses = new List<IStatus>();
         var placeholderStatuses = new List<IStatus>();
 
         var princessUnit = new Unit("The Princess", 100, 5, 16, .05f, 6, princessAbilities, princessStatuses);
@@ -56,7 +51,7 @@ public class Program
         var radiantKnightWard = new Item("Radiant Knight Ward", ItemRarity.Rare, new List<ItemEffect> { new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageReduction), new ItemEffect(1f, OperatorHandler.Add, Stat.Speed) { TriggerType = TriggerType.OnLevelUp } });
         var berryHP = new Item("Berry that triggers when you get to low hp", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(2f, OperatorHandler.Add, Stat.Movement) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.5f, OperatorHandler.Multiply, Stat.Speed) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(1.2f, OperatorHandler.Multiply, Stat.DamageModifier) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f }, new ItemEffect(.15f, OperatorHandler.Add, Stat.CritChance) { TriggerCondition = ctx => ctx.Source.CurrentHP / ctx.Source.EffectiveMaxHP < 15f / 100f } });
         var highRoller = new Item("High Roller", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
-        var hausRebuttal = new Item("Haus' Rebuttal", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = slowStatus } });
+        var hausRebuttal = new Item("Haus' Rebuttal", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = StatusEffect.SlowStatus } });
         var smallAntVision = new Item("A Small Ant's Vision", ItemRarity.Mystical, new List<ItemEffect> { new ItemEffect(2.0f, OperatorHandler.Multiply, Stat.DamageModifier) });
 
         var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal , smallAntVision};
