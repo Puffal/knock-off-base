@@ -107,7 +107,7 @@ public class Program
         {
             if (itemEffect.Status != null)
             {
-                abilityUsed.Statuses?.Add(itemEffect.Status);
+                abilityUsed.Statuses.Add(itemEffect.Status);
             }
         }
         foreach(var status in abilityUsed.Statuses)
