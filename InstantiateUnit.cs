@@ -50,6 +50,7 @@ public class InstantiateUnit
         var light = new Ability("Light", 12, 2, 2, AbilityType.Targeted, new List<IStatus>());
         //Needs:
         // -Way to change multihits if unit is faster than others
+
         //var sacrifice = new Ability("Sacrifice, ")
         //NEEDS A LOT TO IMPLEMENT IN CURRENT STATE
         var summonAllyRogue = new Ability("Summon Ally (Rogue Chosen Randomly)", 14, 1, 2, AbilityType.Melee, new List<IStatus>());
