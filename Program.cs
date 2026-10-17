@@ -453,52 +453,55 @@ public class Program
                 }
 
                 var selectedUnitInput = GetChoiceFromRange(unitList.Count);
+                //placeholder
+                var selectedUnit = new Unit("placeholder", 0, 0, 0, 0f, 0, new List<Ability>(), new List<IStatus>());
                 //find a way to immediately store unit to use for communication
                 switch (selectedUnitInput)
                 {
                     case 0:
 
-                        playerLists[p].Add(InstantiateUnit.CreatePrincess());
+                        selectedUnit = InstantiateUnit.CreatePrincess();
                         break;
 
                     case 1:
 
-                        playerLists[p].Add(InstantiateUnit.CreateHero());
+                        selectedUnit = InstantiateUnit.CreateHero();
                         break;
 
                     case 2:
 
-                        playerLists[p].Add(InstantiateUnit.CreateSavior());
+                        selectedUnit = InstantiateUnit.CreateSavior();
                         break;
 
                     case 3:
 
-                        playerLists[p].Add(InstantiateUnit.CreateMayor());
+                        selectedUnit = InstantiateUnit.CreateMayor();
                         break;
 
                     case 4:
 
-                        playerLists[p].Add(InstantiateUnit.CreateFeeder());
+                        selectedUnit = InstantiateUnit.CreateFeeder();
                         break;
 
                     case 5:
 
-                        playerLists[p].Add(InstantiateUnit.CreatePenguin());
+                        selectedUnit = InstantiateUnit.CreatePenguin();
                         break;
 
                     case 6:
 
-                        playerLists[p].Add(InstantiateUnit.CreateManic());
+                        selectedUnit = InstantiateUnit.CreateManic();
                         break;
 
                     case 7:
 
-                        playerLists[p].Add(InstantiateUnit.CreateBadOmen());
+                        selectedUnit = InstantiateUnit.CreateBadOmen();
                         break;
 
 
                 }
-                Console.WriteLine($"\n{selectedUnitInput.Name} was added to Player {p + 1}'s Roster. {rosterSize - i - 1} left\n");
+                playerLists[p].Add(selectedUnit);
+                Console.WriteLine($"\n{selectedUnit.Name} was added to Player {p + 1}'s Roster. {rosterSize - i - 1} left\n");
             }
             Console.WriteLine($"\nPlayer {p + 1}'s Roster: \n");
             foreach (var unit in playerLists[p])
