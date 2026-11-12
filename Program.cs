@@ -53,6 +53,9 @@ public class Program
         var highRoller = new Item("High Roller", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(1f, OperatorHandler.Add, Stat.Energy) { TriggerType = TriggerType.OnCrit } });
         var hausRebuttal = new Item("Haus' Rebuttal", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = StatusEffect.SlowStatus } });
         var smallAntVision = new Item("A Small Ant's Vision", ItemRarity.Mystical, new List<ItemEffect> { new ItemEffect(2.0f, OperatorHandler.Multiply, Stat.DamageModifier) });
+        //var fiveMgRitalin = new Item("5mg Ritalin", ItemRarity.Uncommon, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = StatusEffect.SlowStatus } })
+        var cucumberRoll = new Item("California Roll w/ Extra Cucumber", ItemRarity.Common, new List<ItemEffect> { new ItemEffect(0f, OperatorHandler.Add, Stat.DamageModifier) { Status = StatusEffect.CucumberConsumable } });
+
 
         var listOfAllItems = new List<Item> { damageCore , sacsPizza , sniperScope , selerity , gen1Mech , armorGames , cardinalOrnament , amyr , gielinorCrest , crowbar , maidenlessEdge , puttPuttItem , radiantKnightWard , berryHP , highRoller , hausRebuttal , smallAntVision};
 

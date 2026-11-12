@@ -8,6 +8,7 @@ public class StatusEffect
     public static SingleStatus SilenceStatus { get; private set; } = new SingleStatus("Silence", 1, Stat.DamageModifier, OperatorHandler.Multiply, 0f);
 	public static SingleStatus VulnerableStatus { get; private set; } = new SingleStatus("Vulnerable", 1, Stat.DamageReduction, OperatorHandler.Multiply, 0.5f);
 	public static SingleStatus RootStatus { get; private set; } = new SingleStatus("Rooted", 1, Stat.Movement, OperatorHandler.Multiply, 0f);
+	public static SingleStatus CucumberConsumable { get; private set; } = new SingleStatus("Cucumber California Roll", 3, Stat.CritChance, OperatorHandler.Add, .30f);
 
 
     public StatusEffect()
