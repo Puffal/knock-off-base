@@ -110,6 +110,11 @@ public class Program
         }
         foreach(var status in abilityUsed.Statuses)
         {
+            if(status is TargetedStatus)
+            {
+                //add proper unit to UnitOfInterst
+            }
+
             defendingUnit.Statuses.Add(status);
         }
     }
@@ -636,20 +641,16 @@ public class Program
     
     public static bool CheckForValidAttack(Unit attackingUnit, Unit defendingUnit)
     {
-        foreach(var status in attackingUnit.Statuses)
-        {
-            Console.WriteLine($"DEBUG: {status.Name}");
-        }
 
+        var isRageActive = attackingUnit.Statuses.FirstOrDefault(status => status.Name == "Rage");
 
-        if (attackingUnit.Statuses.Contains(StatusEffect.RageStatus))
-        {
-            if (StatusEffect.RageStatus.UnitOfInterest == defendingUnit)
-            {
-                return true;
-            }
-            else return false;
-        }
+        if (isRageActive != null) { return isRageActive.UnitOfInterest == defendingUnit;  }
+
+        var isFearActive = attackingUnit.Statuses.FirstOrDefault(status => status.Name == "Fear");
+
+        if (isFearActive != null) { return isFearActive.UnitOfInterest != defendingUnit; }
+
+        else return true;
     }
 
 }

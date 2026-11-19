@@ -10,6 +10,7 @@ public class StatusEffect
 	public static SingleStatus RootStatus { get; private set; } = new SingleStatus("Rooted", 1, Stat.Movement, OperatorHandler.Multiply, 0f);
 	public static SingleStatus CucumberConsumable { get; private set; } = new SingleStatus("Cucumber California Roll", 3, Stat.CritChance, OperatorHandler.Add, .30f);
 	public static TargetedStatus RageStatus { get; private set; } = new TargetedStatus("Rage", 1);
+	public static TargetedStatus FearStatus { get; private set; } = new TargetedStatus("Fear", 1);
 
 
     public StatusEffect()
