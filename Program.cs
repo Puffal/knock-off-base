@@ -633,6 +633,23 @@ public class Program
         }
         return index;
     }
+    
+    public static bool CheckForValidAttack(Unit attackingUnit, Unit defendingUnit)
+    {
+        foreach(var status in attackingUnit.Statuses)
+        {
+            Console.WriteLine($"DEBUG: {status.Name}");
+        }
 
+
+        if (attackingUnit.Statuses.Contains(StatusEffect.RageStatus))
+        {
+            if (StatusEffect.RageStatus.UnitOfInterest == defendingUnit)
+            {
+                return true;
+            }
+            else return false;
+        }
+    }
 
 }

@@ -30,9 +30,7 @@ public class InstantiateUnit
 
     public static Unit CreateHero()
     {
-        var axeSwing = new Ability("Axe Swing", 20, 1, 1, AbilityType.Melee, new List<IStatus>());
-        //Needs:
-        // -add rage status
+        var axeSwing = new Ability("Axe Swing", 20, 1, 1, AbilityType.Melee, new List<IStatus> { StatusEffect.RageStatus});
         var waveBuster = new Ability("Wave Buster", 12, 3, 1, AbilityType.Targeted, new List<IStatus>());
         var tsunamiBuster = new Ability("Tsunami Buster", 20, 5, 1, AbilityType.Targeted, new List<IStatus>());
         //Needs:
@@ -42,7 +40,7 @@ public class InstantiateUnit
         // Needs:
         // -add Parry Status to self
 
-        return new Unit("The Hero", 140, 5, 10, .05f, 4, new List<Ability> { waveBuster, sussyIdea }, new List<IStatus>());
+        return new Unit("The Hero", 140, 5, 10, .05f, 4, new List<Ability> { axeSwing, waveBuster, sussyIdea }, new List<IStatus>());
     }
 
     public static Unit CreateSavior()

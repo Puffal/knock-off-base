@@ -7,5 +7,6 @@
     Speed,
     Energy,
     DamageModifier,
-    DamageReduction
+    DamageReduction,
+    None
 }

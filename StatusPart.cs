@@ -2,12 +2,14 @@
 
 public class StatusPart
 {
-    public Stat StatModified { get; set; }
-    public OperatorHandler OperatorSign { get; set; }
-    public float ModificationNumber { get; set; }
+    public int Duration { get; set; }
+    public Stat StatModified { get; set; } = Stat.None;
+    public OperatorHandler OperatorSign { get; set; } = OperatorHandler.Add;
+    public float ModificationNumber { get; set; } = 0;
 
-    public StatusPart(Stat statModified, OperatorHandler operatorSign, float modificationNumber)
+    public StatusPart(int duration, Stat statModified, OperatorHandler operatorSign, float modificationNumber)
 	{
+        Duration = duration;
 		StatModified = statModified;
         OperatorSign = operatorSign;
         ModificationNumber = modificationNumber;
